@@ -1,0 +1,224 @@
+
+*******Limpieza de Data***************
+
+#DATA 1:
+
+Variable Dependiente: 
+- Número de electores por distrito 
+Variables Independientes:
+(VARIABLE SEXO)
+-Electores Varones
+-Electores Mujeres
+((VARIABLE EDAD)
+-Electores Jóvenes
+-Electores mayores de 70
+
+#Paso 1:Le indico a R que traiga mi base de datos de Github (tal como se descargó de Infogob)
+
+```{r}
+library(rio)
+link="https://github.com/melanyscar29/TrabajoEstadistica2/raw/master/ERM2018_Padron_Distrital.xlsx"
+electores=import(link)
+```
+
+#Observando:
+```{r}
+dim(electores)
+str(electores)
+```
+#Elimino las columnas que no me sirven
+```{r}
+electores[,c(1,2,6,8,10,12)]=NULL
+```
+#Elimino las últimas filas que no me sirven
+```{r}
+electores=electores[-c(1875:1877),]
+```
+#Elimino espacios en blanco
+```{r}
+library(stringr)
+electores$Distrito=str_trim(electores$Distrito)
+```
+
+```{r}
+str(electores)
+```
+
+#Desacargo mi data limpia para subirlo a Github
+```{r}
+save(electores,file="Electores.RData")
+```
+
+
+#DATA 2 (VARIABLE ALFABETISMO)
+
+#Paso 1:Le indico a R que traiga mi base de datos de Github (tal como se descargó del Inei Redatam)
+
+```{r}
+library(rio)
+link="https://github.com/melanyscar29/TrabajoEstadistica2/raw/master/Alfabetizacion.xlsx"
+alfabetismo=import(link)
+```
+
+#Observando:
+```{r}
+dim(alfabetismo)
+str(alfabetismo)
+```
+
+#Elimino las filas que no me interesan
+```{r}
+alfabetismo=alfabetismo[-c(1880:1883),]
+```
+
+
+#Elimino las 5 primeras filas
+```{r}
+alfabetismo=alfabetismo[-c(1:5),]
+```
+
+#Elimino las columnas innecesarias
+```{r}
+alfabetismo[,c(1,2)]=NULL
+```
+
+#Cambiando nombres
+```{r}
+names(alfabetismo)=c("Distrito","Alfabetos", "Analfabetos")
+```
+
+```{r}
+str(alfabetismo)
+```
+
+#Hacemos un str_plit para dividir y quedarnos solo con el nombre del distrito
+```{r}
+library(stringr)
+alfabetismo$Distrito=str_split(alfabetismo$Distrito,
+                          pattern = 'distrito:',
+                          simplify = T)[,2]
+```
+
+#Elimino espacios en blanco
+```{r}
+alfabetismo$Distrito=str_trim(alfabetismo$Distrito)
+```
+
+#Desacargo mi data limpia para subirlo a Github
+
+```{r}
+save(alfabetismo,file="Alfabetismo.RData")
+```
+
+
+#DATA 3 (VARIABLE IDENTIDAD)
+
+- Tiene DNI
+- No tiene DNI
+
+#Paso 1:Le indico a R que traiga mi base de datos de Github (tal como se descargó del INEI Redatam)
+```{r}
+link="https://github.com/melanyscar29/TrabajoEstadistica2/raw/master/DocumentoIdentidad.xlsx"
+identidad=import(link)
+```
+#Observando
+```{r}
+dim(identidad)
+str(identidad)
+```
+
+#Elimino las últimas filas que son innecesarias
+```{r}
+identidad=identidad[-c(1880:1883),]
+```
+
+#Asimismo, elimino las 5 primeras filas
+```{r}
+identidad=identidad[-c(1:5),]
+```
+
+#Ahora, eliminamos las columnas innecesarias
+```{r}
+identidad[,c(1,2,4,5,7)]=NULL
+```
+
+#Cambio de nombre a mis columnas
+```{r}
+names(identidad)=c("Distrito","No tiene DNI", "Si tiene DNI")
+```
+
+```{r}
+str(identidad)
+```
+
+#Realizo un str_plit para dividir y quedarnos solo con el nombre del distrito
+```{r}
+library(stringr)
+identidad$Distrito=str_split(identidad$Distrito,
+                          pattern = 'distrito:',
+                          simplify = T)[,2]
+```
+
+#Eliminamos los espacios en blanco
+```{r}
+identidad$Distrito=str_trim(identidad$Distrito)
+```
+
+#Desacargo mi data limpia para subirlo a Github
+```{r}
+save(identidad,file="Identidad.RData")
+```
+
+
+#DATA 4 (Variable Informacion)
+
+#Paso 1:Le indico a R que traiga mi base de datos de Github (tal como se descargó del Inei Redatam)
+```{r}
+link="https://github.com/melanyscar29/TrabajoEstadistica2/raw/master/AccesoInformacion.xlsx"
+informacion=import(link)
+```
+
+#Elimino las últimas filas innecesarias:
+```{r}
+informacion=informacion[-c(1880:1883),]
+```
+
+
+#Elimino las 5 primeras filas:
+```{r}
+informacion=informacion[-c(1:5),]
+```
+
+#Elimino columnas innecesarias:
+```{r}
+informacion[,c(1,2)]=NULL
+```
+
+#Cambio de nombre a las columnas:
+```{r}
+names(informacion)=c("Distrito","Tiene computadora", "No tiene computadora", "Tiene celular", "No tiene celular", "Tiene tv con cable", "No tiene tv con cable", "Tiene Internet", "No tiene Internet")
+```
+
+```{r}
+str(informacion)
+```
+
+#Hacemos un str_plit para dividir y quedarnos solo con el nombre del distrito
+```{r}
+library(stringr)
+informacion$Distrito=str_split(informacion$Distrito,
+                          pattern = 'distrito:',
+                          simplify = T)[,2]
+```
+
+#Eliminamos espacios en blanco
+```{r}
+informacion$Distrito=str_trim(informacion$Distrito)
+```
+
+#Desacargo mi data limpia para subirlo a Github
+```{r}
+save(informacion,file="Informacion.RData")
+```
+
+
